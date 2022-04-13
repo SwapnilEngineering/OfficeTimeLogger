@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+    <TextView
+        android:id="@+id/txtWeeklyAccumulated"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/roundbutton"
+        android:shadowColor="#9C27B0"
+        android:text="Log It!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtWeeklyAccumulated" />
+
+    <TextView
+        android:id="@+id/txtNormalOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/btnLog" />
+
+    <TextView
+        android:id="@+id/txtEarliestOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/txtNormalOut"
+        app:layout_constraintTop_toBottomOf="@+id/txtNormalOut" />
+
+    <TextView
+        android:id="@+id/txtMon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Mon"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtEarliestOut" />
+    <TextView
+        android:id="@+id/txtTue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Tue"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtMon" />
+
+    <TextView
+        android:id="@+id/txtWed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Wed"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtTue" />
+
+    <TextView
+        android:id="@+id/txtThu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Thu"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtWed" />
+
+    <TextView
+        android:id="@+id/txtFri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Fri"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/txtThu" />
+
+    <EditText
+        android:id="@+id/etMonIn"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/txtMon"
+        app:layout_constraintStart_toEndOf="@+id/txtMon" />
+
+    <EditText
+        android:id="@+id/etMonOut"
+        android:layout_width="190dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/etMonIn"
+        app:layout_constraintStart_toEndOf="@+id/etMonIn" />
+
+    <EditText
+        android:id="@+id/etTueIn"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/txtTue"
+        app:layout_constraintStart_toEndOf="@+id/txtTue" />
+
+    <EditText
+        android:id="@+id/etTueOut"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/etTueIn"
+        app:layout_constraintStart_toEndOf="@+id/etTueIn" />
+
+    <EditText
+        android:id="@+id/etWedIn"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/txtWed"
+        app:layout_constraintStart_toEndOf="@+id/txtWed" />
+
+    <EditText
+        android:id="@+id/etWedOut"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/etWedIn"
+        app:layout_constraintStart_toEndOf="@+id/etWedIn" />
+
+    <EditText
+        android:id="@+id/etThuIn"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/txtThu"
+        app:layout_constraintStart_toEndOf="@+id/txtThu" />
+
+    <EditText
+        android:id="@+id/etThuOut"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/etThuIn"
+        app:layout_constraintStart_toEndOf="@+id/etThuIn" />
+    <EditText
+        android:id="@+id/etFriIn"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/txtFri"
+        app:layout_constraintStart_toEndOf="@+id/txtFri" />
+
+    <EditText
+        android:id="@+id/etFriOut"
+        android:layout_width="113dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/etFriIn"
+        app:layout_constraintStart_toEndOf="@+id/etFriIn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
