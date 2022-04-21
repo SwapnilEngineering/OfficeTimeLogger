@@ -1,8 +1,5 @@
 package com.example.timelogger;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -15,18 +12,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.Instant;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
+
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+
 import java.util.concurrent.TimeUnit;
 
 
@@ -46,10 +41,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 LocalDateTime curdttime = LocalDateTime.now();
                 LocalTime curtime = LocalTime.now();
-                if (validTime(curtime)) {
+                if (validTime(curtime)==curtime) {
                     logTime(curdttime);
                 } else
-                    Toast.makeText(MainActivity.this, "Dont just show off! Get your efficiency right!", Toast.LENGTH_LONG).show();
+                    logTime(curdttime.with(validTime(curtime)));
+                    Toast.makeText(MainActivity.this, "Dont just show off by coming early or sitting late! Get your efficiency right!", Toast.LENGTH_LONG).show();
                 updateView();
             }
         });
@@ -74,8 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public boolean validTime(LocalTime logtime) {
-                return (logtime.isAfter(LocalTime.parse("07:45:00")) && logtime.isBefore(LocalTime.parse("19:00:00")));
+    public LocalTime validTime(LocalTime logtime) {
+//        return (logtime.isAfter(LocalTime.parse("07:45:00")) && logtime.isBefore(LocalTime.parse("19:00:00")));
+        if(logtime.isBefore(LocalTime.parse("07:45:00")))return LocalTime.of(7,45);
+        if(logtime.isAfter(LocalTime.parse("19:00:00"))) return LocalTime.of(19,0);
+        return logtime;
     }
 
     public void updateView() {
@@ -201,31 +200,36 @@ public class MainActivity extends AppCompatActivity {
             LocalTime indttime, odttime;
             while (c.moveToNext()) {
                 String intime = c.getString(0);
-                indttime = LocalTime.parse(intime);
-                String fintime = indttime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+                if (intime !=null){
+                    indttime = LocalTime.parse(intime);
+                    intime = indttime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+                }
                 String outtime = c.getString(1);
-                odttime = LocalTime.parse(outtime);
-                String fouttime = odttime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+                if(outtime !=null){
+                    odttime = LocalTime.parse(outtime);
+                    outtime = odttime.format(DateTimeFormatter.ofPattern("hh:mm a"));
+                }
+
                 switch (dayno) {
                     case 0:
-                        monin.setText(fintime);
-                        monout.setText(fouttime);
+                        monin.setText(intime);
+                        monout.setText(outtime);
                         break;
                     case 1:
-                        tuein.setText(fintime);
-                        tueout.setText(fouttime);
+                        tuein.setText(intime);
+                        tueout.setText(outtime);
                         break;
                     case 2:
-                        wedin.setText(fintime);
-                        wedout.setText(fouttime);
+                        wedin.setText(intime);
+                        wedout.setText(outtime);
                         break;
                     case 3:
-                        thuin.setText(fintime);
-                        thuout.setText(fouttime);
+                        thuin.setText(intime);
+                        thuout.setText(outtime);
                         break;
                     case 4:
-                        friin.setText(fintime);
-                        friout.setText(fouttime);
+                        friin.setText(intime);
+                        friout.setText(outtime);
                         break;
                 }
                 dayno++;
