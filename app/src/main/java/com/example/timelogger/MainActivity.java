@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         if (validDay(curDtTime)) {
             LocalTime curTime = curDtTime.toLocalTime();
             LocalTime okTime = validTime(curTime);
-            curDtTime.with(okTime);
+            curDtTime=curDtTime.with(okTime);
             if (saveTime(curDtTime)) Toast.makeText(MainActivity.this,
                     curDtTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm a")),
                     Toast.LENGTH_LONG).show();
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean saveTime(LocalDateTime curTime) {
         try {
-            String strdate = curTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+            String strdate = curTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             String strtime = curTime.format(DateTimeFormatter.ofPattern("HH:mm"));
             SQLiteDatabase db = databaseOperation.getWritableDatabase();
             ContentValues data = new ContentValues();
@@ -176,16 +176,17 @@ public class MainActivity extends AppCompatActivity {
         while (end.getDayOfWeek() != DayOfWeek.SUNDAY) {
             end = end.plusDays(1);
         }
-        String stdt = start.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
-        String enddt = end.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        String stdt = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String enddt = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         SQLiteDatabase db = databaseOperation.getReadableDatabase();
         Cursor cursor = db.rawQuery("Select Intime,Outtime from tblTimeLog where Date between ? and ? ", new String[]{stdt, enddt});
         return cursor;
     }
 
     public LocalTime normalOut() {
+        Settings defaultsettings= new Settings();
         LocalDate curtime = LocalDate.now();
-        String strdate = curtime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+        String strdate = curtime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         SQLiteDatabase db = databaseOperation.getReadableDatabase();
         Cursor cursor = db.rawQuery("Select Intime from tblTimeLog where Date = ? ", new String[]{strdate});
         if (cursor != null && cursor.getCount() > 0) {
@@ -193,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             String intime = cursor.getString(0);
             LocalTime dttime = LocalTime.parse(intime);
             dttime = dttime.plusMinutes((long) (normalWorkingHrs * 60));
+            if (defaultsettings.latestOut.isBefore(dttime)) dttime=defaultsettings.latestOut;
             return dttime;
         }
         return null;
@@ -200,10 +202,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public LocalTime earliestOut() {
+        Settings defaultSettings= new Settings();
         LocalTime normalout = normalOut();
         if (normalout != null) {
             long excesstime = getExcesstime();
             LocalTime eout = normalout.minusMinutes(excesstime);
+            if (defaultSettings.latestOut.isBefore(eout)) eout= defaultSettings.latestOut;
             return eout;
         }
         return null;
