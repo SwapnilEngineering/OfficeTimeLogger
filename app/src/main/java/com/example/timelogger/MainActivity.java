@@ -1,9 +1,12 @@
 package com.example.timelogger;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -39,14 +42,7 @@ public class MainActivity extends AppCompatActivity {
         btnlog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocalDateTime curdttime = LocalDateTime.now();
-                LocalTime curtime = LocalTime.now();
-                if (validTime(curtime)==curtime) {
-                    logTime(curdttime);
-                } else
-                    logTime(curdttime.with(validTime(curtime)));
-                    Toast.makeText(MainActivity.this, "Dont just show off by coming early or sitting late! Get your efficiency right!", Toast.LENGTH_LONG).show();
-                updateView();
+                LogTime();
             }
         });
         final EditText txtMonin = findViewById(R.id.etMonIn);
@@ -70,11 +66,35 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void LogTime() {
+        LocalDateTime curDtTime = LocalDateTime.now();
+        if (validDay(curDtTime)) {
+            LocalTime curTime = curDtTime.toLocalTime();
+            LocalTime okTime = validTime(curTime);
+            curDtTime.with(okTime);
+            if (saveTime(curDtTime)) Toast.makeText(MainActivity.this,
+                    curDtTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm a")),
+                    Toast.LENGTH_LONG).show();
+            if (okTime != curTime) Toast.makeText(MainActivity.this,
+                    "Dont just show off by coming early or sitting late! Get your efficiency right!",
+                    Toast.LENGTH_LONG).show();
+            updateView();
+        } else {
+            Toast.makeText(MainActivity.this, "Go home, get life", Toast.LENGTH_LONG);
+        }
+    }
+
     public LocalTime validTime(LocalTime logtime) {
-//        return (logtime.isAfter(LocalTime.parse("07:45:00")) && logtime.isBefore(LocalTime.parse("19:00:00")));
-        if(logtime.isBefore(LocalTime.parse("07:45:00")))return LocalTime.of(7,45);
-        if(logtime.isAfter(LocalTime.parse("19:00:00"))) return LocalTime.of(19,0);
+        Settings defaultSettings = new Settings();
+        if (logtime.isBefore(defaultSettings.earliestIn)) return defaultSettings.earliestIn;
+        if (logtime.isAfter(defaultSettings.latestOut)) return defaultSettings.latestOut;
         return logtime;
+    }
+
+    public boolean validDay(LocalDateTime dtTime) {
+        DayOfWeek day = dtTime.getDayOfWeek();
+        if (day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY) return false;
+        return true;
     }
 
     public void updateView() {
@@ -102,23 +122,29 @@ public class MainActivity extends AppCompatActivity {
         setWeekdayTime();
     }
 
-    public void logTime(LocalDateTime curTime) {
-        String strdate = curTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
-        String strtime = curTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-        SQLiteDatabase db = databaseOperation.getWritableDatabase();
-        ContentValues data = new ContentValues();
-        data.put("Date", strdate);
-        Cursor cursor = db.rawQuery("Select Intime,Outtime from tblTimeLog where Date = ? ", new String[]{strdate});
-        if (cursor != null) {
-            if (cursor.getCount() == 0) {
-                data.put("Intime", strtime);
-                db.insert("tblTimeLog", "", data);
-            } else {
-                data.put("Outtime", strtime);
-                db.update("tblTimeLog", data, "Date=?", new String[]{strdate});
+    public boolean saveTime(LocalDateTime curTime) {
+        try {
+            String strdate = curTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"));
+            String strtime = curTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+            SQLiteDatabase db = databaseOperation.getWritableDatabase();
+            ContentValues data = new ContentValues();
+            data.put("Date", strdate);
+            Cursor cursor = db.rawQuery("Select Intime,Outtime from tblTimeLog where Date = ? ", new String[]{strdate});
+            if (cursor != null) {
+                if (cursor.getCount() == 0) {
+                    data.put("Intime", strtime);
+                    db.insert("tblTimeLog", "", data);
+                } else {
+                    data.put("Outtime", strtime);
+                    db.update("tblTimeLog", data, "Date=?", new String[]{strdate});
+                }
             }
+            return true;
+        } catch (SQLiteException e) {
+            return false;
         }
-        Toast.makeText(MainActivity.this, strdate + strtime, Toast.LENGTH_LONG).show();
+
+
     }
 
     public long getExcesstime() {
@@ -200,12 +226,12 @@ public class MainActivity extends AppCompatActivity {
             LocalTime indttime, odttime;
             while (c.moveToNext()) {
                 String intime = c.getString(0);
-                if (intime !=null){
+                if (intime != null) {
                     indttime = LocalTime.parse(intime);
                     intime = indttime.format(DateTimeFormatter.ofPattern("hh:mm a"));
                 }
                 String outtime = c.getString(1);
-                if(outtime !=null){
+                if (outtime != null) {
                     odttime = LocalTime.parse(outtime);
                     outtime = odttime.format(DateTimeFormatter.ofPattern("hh:mm a"));
                 }

@@ -7,21 +7,22 @@
     tools:context=".MainActivity">
 
 
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="20dp" />
+
     <TextView
         android:id="@+id/txtWeeklyAccumulated"
-        android:layout_width="44dp"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColor="#9C27B0"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -53,6 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#9C27B0"
+        android:layout_marginTop="32dp"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/txtNormalOut"
         app:layout_constraintTop_toBottomOf="@+id/txtNormalOut" />
@@ -61,16 +63,21 @@
         android:id="@+id/txtMon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Mon"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtEarliestOut" />
+
     <TextView
         android:id="@+id/txtTue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Tue"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtMon" />
 
@@ -78,8 +85,10 @@
         android:id="@+id/txtWed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Wed"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtTue" />
 
@@ -87,8 +96,10 @@
         android:id="@+id/txtThu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Thu"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtWed" />
 
@@ -96,25 +107,27 @@
         android:id="@+id/txtFri"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="Fri"
+        android:textColor="#9C27B0"
+        android:textSize="18dp"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/txtThu" />
 
     <EditText
         android:id="@+id/etMonIn"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/txtMon"
-        app:layout_constraintStart_toEndOf="@+id/txtMon" />
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <EditText
         android:id="@+id/etMonOut"
-        android:layout_width="190dp"
-        android:layout_height="39dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
@@ -123,19 +136,19 @@
 
     <EditText
         android:id="@+id/etTueIn"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/txtTue"
-        app:layout_constraintStart_toEndOf="@+id/txtTue" />
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <EditText
         android:id="@+id/etTueOut"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/etTueIn"
@@ -143,19 +156,19 @@
 
     <EditText
         android:id="@+id/etWedIn"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/txtWed"
-        app:layout_constraintStart_toEndOf="@+id/txtWed" />
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <EditText
         android:id="@+id/etWedOut"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/etWedIn"
@@ -163,40 +176,47 @@
 
     <EditText
         android:id="@+id/etThuIn"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/txtThu"
-        app:layout_constraintStart_toEndOf="@+id/txtThu" />
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <EditText
         android:id="@+id/etThuOut"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/etThuIn"
         app:layout_constraintStart_toEndOf="@+id/etThuIn" />
+
     <EditText
         android:id="@+id/etFriIn"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/txtFri"
-        app:layout_constraintStart_toEndOf="@+id/txtFri" />
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <EditText
         android:id="@+id/etFriOut"
-        android:layout_width="113dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="@+id/etFriIn"
         app:layout_constraintStart_toEndOf="@+id/etFriIn" />
+
+    <!--    <TimePicker android:id="@+id/timePicker1"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:timePickerMode="clock"-->
+    <!--        android:visibility="invisible"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
