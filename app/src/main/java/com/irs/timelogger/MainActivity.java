@@ -1,4 +1,4 @@
-package com.example.timelogger;
+package com.irs.timelogger;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -49,21 +49,89 @@ public class MainActivity extends AppCompatActivity {
         txtMonin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Calendar cldr = Calendar.getInstance();
-                int hour = cldr.get(Calendar.HOUR_OF_DAY);
-                int minutes = cldr.get(Calendar.MINUTE);
-                // time picker dialog
-                picker = new TimePickerDialog(MainActivity.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                txtMonin.setText(sHour + ":" + sMinute);
-                            }
-                        }, hour, minutes, true);
-                picker.show();
+                showTimepicker(txtMonin);
+            }
+        });
+        final EditText txtMonout= findViewById(R.id.etMonOut);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtMonout);
+            }
+        });
+        final EditText txtTuein= findViewById(R.id.etTueIn);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtTuein);
+            }
+        });
+        final EditText txtTueout= findViewById(R.id.etTueOut);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtTueout);
+            }
+        });
+        final EditText txtWedin= findViewById(R.id.etWedIn);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtWedin);
+            }
+        });
+        final EditText txtWedout= findViewById(R.id.etWedOut);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtWedout);
+            }
+        });
+        final EditText txtThuin= findViewById(R.id.etThuIn);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtThuin);
+            }
+        });
+        final EditText txtThuout= findViewById(R.id.etThuOut);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtThuout);
             }
         });
 
+        final EditText txtFriin= findViewById(R.id.etFriIn);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtFriin);
+            }
+        });
+        final EditText txtFriout= findViewById(R.id.etFriOut);
+        txtMonout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimepicker(txtFriout);
+            }
+        });
+    }
+
+    public void showTimepicker(EditText et) {
+        final EditText etext = et;
+        final Calendar cldr = Calendar.getInstance();
+        int hour = cldr.get(Calendar.HOUR_OF_DAY);
+        int minutes = cldr.get(Calendar.MINUTE);
+        // time picker dialog
+        picker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                boolean isPM = (sHour >= 12);
+                etext.setText(String.format("%02d:%02d %s", (sHour == 12 || sHour == 0) ? 12 : sHour % 12, sMinute, isPM ? "PM" : "AM"));
+            }
+        }, hour, minutes,false);
+        picker.show();
     }
 
     public void LogTime() {
@@ -71,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         if (validDay(curDtTime)) {
             LocalTime curTime = curDtTime.toLocalTime();
             LocalTime okTime = validTime(curTime);
-            curDtTime=curDtTime.with(okTime);
+            curDtTime = curDtTime.with(okTime);
             if (saveTime(curDtTime)) Toast.makeText(MainActivity.this,
                     curDtTime.format(DateTimeFormatter.ofPattern("dd-MMM-yyyy hh:mm a")),
                     Toast.LENGTH_LONG).show();
@@ -184,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public LocalTime normalOut() {
-        Settings defaultsettings= new Settings();
+        Settings defaultsettings = new Settings();
         LocalDate curtime = LocalDate.now();
         String strdate = curtime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         SQLiteDatabase db = databaseOperation.getReadableDatabase();
@@ -194,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
             String intime = cursor.getString(0);
             LocalTime dttime = LocalTime.parse(intime);
             dttime = dttime.plusMinutes((long) (normalWorkingHrs * 60));
-            if (defaultsettings.latestOut.isBefore(dttime)) dttime=defaultsettings.latestOut;
+            if (defaultsettings.latestOut.isBefore(dttime)) dttime = defaultsettings.latestOut;
             return dttime;
         }
         return null;
@@ -202,12 +270,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public LocalTime earliestOut() {
-        Settings defaultSettings= new Settings();
+        Settings defaultSettings = new Settings();
         LocalTime normalout = normalOut();
         if (normalout != null) {
             long excesstime = getExcesstime();
             LocalTime eout = normalout.minusMinutes(excesstime);
-            if (defaultSettings.latestOut.isBefore(eout)) eout= defaultSettings.latestOut;
+            if (defaultSettings.latestOut.isBefore(eout)) eout = defaultSettings.latestOut;
             return eout;
         }
         return null;

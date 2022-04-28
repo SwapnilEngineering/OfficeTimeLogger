@@ -121,6 +121,7 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/txtMon"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
@@ -214,9 +215,5 @@
         app:layout_constraintBottom_toBottomOf="@+id/etFriIn"
         app:layout_constraintStart_toEndOf="@+id/etFriIn" />
 
-    <!--    <TimePicker android:id="@+id/timePicker1"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:timePickerMode="clock"-->
-    <!--        android:visibility="invisible"/>-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

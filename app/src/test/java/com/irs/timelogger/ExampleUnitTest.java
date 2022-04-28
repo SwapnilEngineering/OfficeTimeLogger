@@ -1,4 +1,4 @@
-package com.example.timelogger;
+package com.irs.timelogger;
 
 import org.junit.Test;
 
