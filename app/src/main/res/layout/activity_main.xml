@@ -132,6 +132,7 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/etMonIn"
         app:layout_constraintStart_toEndOf="@+id/etMonIn" />
 
@@ -142,6 +143,7 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/txtTue"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
@@ -152,6 +154,7 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/etTueIn"
         app:layout_constraintStart_toEndOf="@+id/etTueIn" />
 
@@ -162,6 +165,7 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/txtWed"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
@@ -172,6 +176,7 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/etWedIn"
         app:layout_constraintStart_toEndOf="@+id/etWedIn" />
 
@@ -182,6 +187,7 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/txtThu"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
@@ -192,6 +198,7 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/etThuIn"
         app:layout_constraintStart_toEndOf="@+id/etThuIn" />
 
@@ -202,6 +209,7 @@
         android:layout_marginStart="48dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/txtFri"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
@@ -212,6 +220,7 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="time"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="@+id/etFriIn"
         app:layout_constraintStart_toEndOf="@+id/etFriIn" />
 

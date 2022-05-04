@@ -25,6 +25,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 
@@ -60,57 +61,56 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         final EditText txtTuein= findViewById(R.id.etTueIn);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtTuein.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtTuein);
             }
         });
         final EditText txtTueout= findViewById(R.id.etTueOut);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtTueout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtTueout);
             }
         });
         final EditText txtWedin= findViewById(R.id.etWedIn);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtWedin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtWedin);
             }
         });
         final EditText txtWedout= findViewById(R.id.etWedOut);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtWedout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtWedout);
             }
         });
         final EditText txtThuin= findViewById(R.id.etThuIn);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtThuin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtThuin);
             }
         });
         final EditText txtThuout= findViewById(R.id.etThuOut);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtThuout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtThuout);
             }
         });
-
         final EditText txtFriin= findViewById(R.id.etFriIn);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtFriin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtFriin);
             }
         });
         final EditText txtFriout= findViewById(R.id.etFriOut);
-        txtMonout.setOnClickListener(new View.OnClickListener() {
+        txtFriout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showTimepicker(txtFriout);
@@ -128,11 +128,41 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
                 boolean isPM = (sHour >= 12);
+                updateDb(etext.getId(),sHour,sMinute);
                 etext.setText(String.format("%02d:%02d %s", (sHour == 12 || sHour == 0) ? 12 : sHour % 12, sMinute, isPM ? "PM" : "AM"));
             }
         }, hour, minutes,false);
         picker.show();
     }
+
+    public void updateDb(int etid,int hr, int min){
+        DayOfWeek day= getDayfromEt(etid);
+        String timeType=getTimeType(etid);
+        LocalDate curdt = LocalDate.now();
+        LocalDate editDate=getWeekDateFromDay(getWeekStartDate(curdt),day);
+        String strDate=editDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String editTime = String.format("%02d:%02d",hr,min);
+        SQLiteDatabase db = databaseOperation.getWritableDatabase();
+        ContentValues data = new ContentValues();
+        data.put("Date", strDate);
+        data.put(timeType, editTime);
+        db.update("tblTimeLog", data, "Date=?", new String[]{strDate});
+        updateView();
+    }
+    public DayOfWeek getDayfromEt(int etid){
+        if (etid==R.id.etMonIn || etid==R.id.etMonOut) return  DayOfWeek.MONDAY;
+        if (etid==R.id.etTueIn || etid==R.id.etTueOut) return  DayOfWeek.TUESDAY;
+        if (etid==R.id.etWedIn || etid==R.id.etWedOut) return  DayOfWeek.WEDNESDAY;
+        if (etid==R.id.etWedIn || etid==R.id.etThuOut) return  DayOfWeek.THURSDAY;
+        if (etid==R.id.etFriIn || etid==R.id.etFriOut) return  DayOfWeek.FRIDAY;
+        return  DayOfWeek.SUNDAY;
+    }
+
+    public String getTimeType(int etid){
+        if (etid==R.id.etMonIn || etid==R.id.etTueIn ||etid==R.id.etWedIn ||etid==R.id.etWedIn ||etid==R.id.etFriIn)return "Intime";
+        return "Outtime";
+    }
+
 
     public void LogTime() {
         LocalDateTime curDtTime = LocalDateTime.now();
@@ -211,8 +241,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (SQLiteException e) {
             return false;
         }
-
-
     }
 
     public long getExcesstime() {
@@ -233,19 +261,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public LocalDate getWeekStartDate(LocalDate dt){
+        LocalDate dtStart=dt;
+        while (dtStart.getDayOfWeek() != DayOfWeek.MONDAY) {
+            dtStart = dtStart.minusDays(1);
+        }
+        return  dtStart;
+    }
+
+    public LocalDate getWeekEndDate(LocalDate dt){
+        LocalDate dtEnd=dt;
+        while (dtEnd.getDayOfWeek() != DayOfWeek.SUNDAY) {
+            dtEnd = dtEnd.plusDays(1);
+        }
+        return dtEnd;
+    }
+
+    public LocalDate getWeekDateFromDay(LocalDate weekStartDate,DayOfWeek day){
+        LocalDate weekDate=weekStartDate;
+        while(weekDate.getDayOfWeek() !=day){
+            weekDate=weekDate.plusDays(1);
+        }
+        return weekDate;
+    }
+
     public Cursor getWeekCursor() {
         LocalDate curdt = LocalDate.now();
         String excesstime = "0:00";
-        LocalDate start = curdt;
-        while (start.getDayOfWeek() != DayOfWeek.MONDAY) {
-            start = start.minusDays(1);
-        }
-        LocalDate end = curdt;
-        while (end.getDayOfWeek() != DayOfWeek.SUNDAY) {
-            end = end.plusDays(1);
-        }
-        String stdt = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String enddt = end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate startDate=getWeekStartDate(curdt);
+        String stdt = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate endDate=getWeekEndDate(curdt);
+        String enddt = endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         SQLiteDatabase db = databaseOperation.getReadableDatabase();
         Cursor cursor = db.rawQuery("Select Intime,Outtime from tblTimeLog where Date between ? and ? ", new String[]{stdt, enddt});
         return cursor;
